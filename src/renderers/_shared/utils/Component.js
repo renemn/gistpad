@@ -1,6 +1,6 @@
 module.exports = class Component {
   static template() {
-    return `<div><div>`;
+    return `<div></div>`;
   }
 
   constructor(props = {}) {

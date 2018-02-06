@@ -3,22 +3,22 @@ const loadMonaco = require('../../_shared/utils/loadMonaco');
 const customJS = require('../../_shared/utils/javascriptLang');
 const githubTheme = require('../../_shared/utils/githubTheme');
 
-module.exports = class GistFile extends Component {
+module.exports = class GistDocument extends Component {
   static template({ filename }) {
     return (
-      `<div class="gist-file">
-        <header class="gist-file-head">
-          <span class="gist-file-name">${filename}</span>
+      `<div class="gist-document">
+        <header class="gist-document-head">
+          <span class="gist-document-name">${filename}</span>
         </header>
-        <section class="gist-file-body">
+        <section class="gist-document-body">
         </section>
       </diV>`
     );
   }
   
   componentAfterInit() {
-    this.$filename = this.$element.getElementsByClassName('gist-file-name`')[0];
-    this.$body = this.$element.getElementsByClassName('gist-file-body')[0];
+    this.$filename = this.$element.getElementsByClassName('gist-document-name`')[0];
+    this.$body = this.$element.getElementsByClassName('gist-document-body')[0];
     this._addMonacoEditor();
   }
 
