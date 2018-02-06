@@ -12,7 +12,7 @@ module.exports = class GistFolder extends Component {
     dirTree.children.forEach(({ name: filename }, i) => {
       this.addChild(new GistFile({
         key: `filename-${i}`,
-        filename: filename,
+        filename,
       }).render(fragment));
     });
     this.$element.appendChild(fragment);
