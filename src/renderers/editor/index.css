@@ -1,3 +1,6 @@
+@import './components/GistCollection.css';
+@import './components/GistDocument.css';
+
 html {
   overflow: hidden;
   height: 100%;

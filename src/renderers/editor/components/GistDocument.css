@@ -1,0 +1,24 @@
+.gist-document {
+  margin: 20px 0px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.gist-document .gist-document-head {
+  height: 43px;
+  border-bottom: 1px solid #ddd;
+  background-color: #fafbfc;
+  border-radius: 3px 3px 0 0;
+}
+
+.gist-document .gist-document-body {
+  border-radius: 0 0 3px 3px;
+}
+
+.gist-document .gist-document-body .monaco-editor {
+  border-radius: 0 0 3px 3px;
+}
+
+.gist-document .gist-document-body .monaco-editor .overflow-guard {
+  border-radius: 0 0 3px 3px;
+}

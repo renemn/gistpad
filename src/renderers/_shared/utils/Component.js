@@ -9,7 +9,7 @@ module.exports = class Component {
     }
     let $tmp = document.createElement('div');
     this.children = new Map();
-    this.parent = null
+    this.parent = null;
     this.props = Object.assign({}, props);
     $tmp.insertAdjacentHTML('afterbegin', this.constructor.template(this.props));
     this.$element = $tmp.firstChild;
@@ -21,6 +21,7 @@ module.exports = class Component {
   }
 
   componentAfterInit() {}
+  componentAfterRender() {}
 
   setParent(parent) {
     this.parent = parent;
@@ -72,6 +73,7 @@ module.exports = class Component {
         element.appendChild(this.$element);
         break;
     }
+    this.componentAfterRender();
     return this;
   }
 }

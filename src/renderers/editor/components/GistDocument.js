@@ -1,14 +1,35 @@
 const Component = require('../../_shared/utils/Component');
-const loadMonaco = require('../../_shared/utils/loadMonaco');
-const customJS = require('../../_shared/utils/javascriptLang');
-const githubTheme = require('../../_shared/utils/githubTheme');
+
+const getLanguageFromExtension = (extension) => {
+  let filetype = null;
+  switch (extension) {
+    case '.js':
+      filetype = 'customJS';
+      break;
+    case '.css':
+      filetype = 'css';
+      break;
+    case '.html':
+      filetype = 'html';
+      break;
+    case '.md':
+      filetype = 'markdown';
+      break;
+    case '.json':
+      filetype = 'json';
+      break;
+    default:
+      filetype = 'plaintext';
+  }
+  return filetype;
+};
 
 module.exports = class GistDocument extends Component {
-  static template({ filename }) {
+  static template({ name }) {
     return (
       `<div class="gist-document">
         <header class="gist-document-head">
-          <span class="gist-document-name">${filename}</span>
+          <span class="gist-document-name">${name}</span>
         </header>
         <section class="gist-document-body">
         </section>
@@ -22,37 +43,42 @@ module.exports = class GistDocument extends Component {
     this._addMonacoEditor();
   }
 
+  _createModel() {
+    const { extension, value, name } = this.props;
+    let uri = window.monaco.Uri.parse(`file:///${name}`);
+    let model = window.monaco.editor.getModel(uri);
+    if (!model) {
+      model = window.monaco.editor.createModel(value, getLanguageFromExtension(extension), uri);
+      model.updateOptions({
+        tabSize: 2,
+        insertSpaces: true,
+      });
+    }
+    return model;
+  }
+
   async _addMonacoEditor() {
-    this.monaco = await loadMonaco();
-    this.monaco.languages.register({ id: 'customJS' });
-    this.monaco.languages.setMonarchTokensProvider('customJS', customJS);
-    this.monaco.editor.defineTheme('github', githubTheme);
-    this.editor = this.monaco.editor.create(this.$body, {
-      language: 'customJS',
+    let model = this._createModel();
+    this.editor = window.monaco.editor.create(this.$body, {
       theme: 'github',
       minimap: { enabled: false },
       scrollBeyondLastLine: false,
-      value: '// Javascript code here...',
       contextmenu: false,
       lineDecorationsWidth: 20,
       lineHeight: 18,
       renderLineHighlight: 'line',
-      scrollbar: {
-        vertical: 'hidden',
-        verticalHasArrows: false,
-      },
+      scrollbar: { vertical: 'hidden', verticalHasArrows: false },
+      model,
     });
     this.editor.onDidChangeModelContent(e => {
       this.refreshEditorLayout();
     });
-    this.refreshEditorLayout();
   }
 
   refreshEditorLayout() {
-    const separation = 20;
     const lineHeight = this.editor.getConfiguration().lineHeight;
     const lineCount = this.editor.getModel().getLineCount();
-    this.$body.style.height = `${(lineHeight * lineCount) + separation}px`;
+    this.$body.style.height = `${lineHeight * lineCount}px`;
     this.editor.layout();
   }
 }
