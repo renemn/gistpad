@@ -22,7 +22,7 @@ log.sign(displayName, version, { font: 'Big' });
     await config.setup(opts)
       .catch(lifespan.fail('Error while setting up configuration.'));
     
-    // 2. Prepare and clean build folder before producing
+    // 2. Prepare and clean the build folder before producing
     await prepare();
     
     // ['SIGINT', 'SIGTERM'].forEach((sig) => {
