@@ -1,0 +1,11 @@
+{
+  "assets": "src/assets",
+  "banner": "config/banner.js",
+  "build": "build",
+  "eslintrc": "config/.eslintrc",
+  "main": "src/main",
+  "nodeModules": "node_modules",
+  "package": "package.json",
+  "renderers": "src/renderers",
+  "src": "src"
+}
