@@ -11,6 +11,14 @@
   border-radius: 3px 3px 0 0;
 }
 
+.gist-document .gist-document-head strong {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,monospace;
+  font-size: 12px;
+  color: #0366d6;
+  display: inline-block;
+  margin: 15px 10px 0;
+}
+
 .gist-document .gist-document-body {
   border-radius: 0 0 3px 3px;
 }
@@ -21,4 +29,12 @@
 
 .gist-document .gist-document-body .monaco-editor .overflow-guard {
   border-radius: 0 0 3px 3px;
+}
+
+.gist-document .gist-document-body .monaco-editor .view-overlays .current-line {
+  border: transparent none;
+}
+
+.gist-document .gist-document-body .monaco-editor .view-overlays.focused .current-line {
+  background-color: rgba(220, 235, 252, 0.22);
 }

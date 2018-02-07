@@ -29,7 +29,7 @@ module.exports = class GistDocument extends Component {
     return (
       `<div class="gist-document">
         <header class="gist-document-head">
-          <span class="gist-document-name">${name}</span>
+          <strong class="gist-document-name">${name}</strong>
         </header>
         <section class="gist-document-body">
         </section>
@@ -57,7 +57,7 @@ module.exports = class GistDocument extends Component {
     return model;
   }
 
-  async _addMonacoEditor() {
+  _addMonacoEditor() {
     let model = this._createModel();
     this.editor = window.monaco.editor.create(this.$body, {
       theme: 'github',
