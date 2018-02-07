@@ -7,22 +7,6 @@ const gistDirTree = {
   type: 'directory',
   children: [
     {
-      path: 'k2je08kf5g/index.html',
-      name: 'index.html',
-      size: 200,
-      type: 'file',
-      extension: '.html',
-      value: '<!-- HTML here! -->',
-    },
-    {
-      path: 'l9j0mcu3v9/index.css',
-      name: 'index.css',
-      size: 300,
-      type: 'file',
-      extension: '.css',
-      value: '/* CSS here! */',
-    },
-    {
       path: 'j19d02lm4t/index.js',
       name: 'index.js',
       size: 400,
@@ -46,6 +30,53 @@ export default decorate({
   },
 
 });`.trim(),
+    },
+    {
+      path: 'k2je08kf5g/index.html',
+      name: 'index.html',
+      size: 200,
+      type: 'file',
+      extension: '.html',
+      value: `
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+  <link data-inline="yes-please" href="./spinner.css" rel="stylesheet" />
+  <style type="text/css">
+    body { margin: 0; padding: 0; border: 0; }
+    .monaco-editor { overflow: hidden; }
+  </style>
+</head>
+<body>
+  <div id="root">
+  </div>
+</body>
+</html>`.trim(),
+    },
+    {
+      path: 'l9j0mcu3v9/index.css',
+      name: 'index.css',
+      size: 300,
+      type: 'file',
+      extension: '.css',
+      value: `
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI",Arial,"HelveticaNeue-Light", sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+}
+
+select {
+  width: initial;
+}
+
+.playground-page .title {
+  font-family: "Segoe UI Light","HelveticaNeue-UltraLight", sans-serif;
+  font-weight: 100;
+  font-size: 1.8em;
+}`.trim(),
     },
   ],
 };
