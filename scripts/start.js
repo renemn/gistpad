@@ -1,9 +1,10 @@
 process.env.NODE_ENV = 'development';
 
 const options = require('minimist')(process.argv.slice(2));
-const config = require('../config/start.config');
+const config = require('../config');
 const log = require('../lib/log');
 const lifespan = require('../lib/lifespan');
+const prepare = require('../lib/prepare');
 const { displayName, version } = require('../package.json');
 
 lifespan.start();
@@ -20,6 +21,9 @@ log.sign(displayName, version, { font: 'Big' });
     // 1. Setup configuration asynchronously and fail if errors are found
     await config.setup(opts)
       .catch(lifespan.fail('Error while setting up configuration.'));
+    
+    // 2. Prepare and clean build folder before producing
+    await prepare();
     
     // ['SIGINT', 'SIGTERM'].forEach((sig) => {
     //   process.on(sig, () => {
