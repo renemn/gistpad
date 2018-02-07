@@ -1,12 +1,37 @@
 {
   "name": "gistpad",
+  "displayName": "Gistpad",
   "version": "0.0.1",
-  "main": "src/main.js",
+  "main": "build/index.js",
   "private": true,
-  "devDependencies": {
-    "electron": "^1.7.11"
+  "scripts": {
+    "start": "node scripts/start.js --debug"
   },
+  "devDependencies": {},
   "dependencies": {
-    "monaco-editor": "^0.10.1"
+    "babel-code-frame": "^6.26.0",
+    "chalk": "^2.3.0",
+    "chokidar": "^2.0.0",
+    "electron": "^1.8.2",
+    "eslint": "^4.17.0",
+    "eslint-plugin-import": "^2.8.0",
+    "figlet": "^1.2.0",
+    "finalhandler": "^1.1.0",
+    "fs-extra": "^5.0.0",
+    "minimist": "^1.2.0",
+    "monaco-editor": "^0.10.1",
+    "postcss": "^6.0.17",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-csso": "^3.0.0",
+    "postcss-import": "^11.0.0",
+    "rollup": "^0.55.3",
+    "rollup-plugin-buble": "^0.18.0",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-eslint": "^4.0.0",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-resolve": "^3.0.2",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^3.0.0",
+    "serve-static": "^1.13.1"
   }
 }
