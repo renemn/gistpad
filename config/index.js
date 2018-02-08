@@ -37,6 +37,7 @@ config.setup = (options = {}) => (
       }
 
       config.paths = {};
+      config.main = { cache: null };
       config.renderers = {};
       config.eslintErrors = new Set();
 
@@ -62,7 +63,10 @@ config.setup = (options = {}) => (
         ))
         .forEach(name => {
           const rendererPath = path.resolve(renderersPath, name);
-          config.renderers[name] = { active: false };
+          config.renderers[name] = {
+            active: false,
+            cache: null,
+          };
           config.paths.renderers[name] = {
             root: rendererPath,
             css: path.resolve(rendererPath, INDEX_CSS),
