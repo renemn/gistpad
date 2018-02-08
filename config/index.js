@@ -40,6 +40,7 @@ config.setup = (options = {}) => (
       config.bundles = {};
       config.eslintErrors = {};
       config.renderers = [];
+      config.server = null;
 
       Object.keys(pathsJSON).forEach(name => {
         config.paths[name] = path.resolve(config.cwd, pathsJSON[name]);

@@ -6,6 +6,7 @@ const log = require('../utils/log');
 const lifespan = require('../utils/lifespan');
 const prepare = require('../lib/prepare');
 const produce = require('../lib/produce');
+const serve = require('../lib/serve');
 const { displayName, version } = require('../package.json');
 
 lifespan.start();
@@ -30,18 +31,19 @@ log.sign(displayName, version, { font: 'Big' });
     await produce()
       .catch(lifespan.fail('Error while producing initial bundles.'));
     
-    // await serve()
-    //   .catch(lifespan.fail('Error during server initialization.'));
+    // 4. Serve bundles and assets from build folder
+    await serve()
+      .catch(lifespan.fail('Error during server initialization.'));
     
-    // ['SIGINT', 'SIGTERM'].forEach((sig) => {
-    //   process.on(sig, () => {
-    //     lifespan.finish();
-    //   });
-    // });
+    // 5. Stop all processes running when signals below get listened
+    ['SIGINT', 'SIGTERM'].forEach((sig) => {
+      process.on(sig, () => {
+        lifespan.finish();
+      });
+    });
 
-    // console.log(JSON.stringify(config, null, 2));
+    // 6. Log the whole configuration, only on debug mode on
     log.debug('Config: ↴\n', config);
-    lifespan.finish();
   } catch (err) {
     if (err && err.message) {
       return Promise.reject(err.message);
