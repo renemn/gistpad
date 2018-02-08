@@ -37,9 +37,8 @@ config.setup = (options = {}) => (
       }
 
       config.paths = {};
-      config.main = { cache: null };
-      config.renderers = {};
-      config.eslintErrors = new Set();
+      config.bundles = {};
+      config.eslintErrors = {};
 
       Object.keys(pathsJSON).forEach(name => {
         config.paths[name] = path.resolve(config.cwd, pathsJSON[name]);
@@ -63,10 +62,6 @@ config.setup = (options = {}) => (
         ))
         .forEach(name => {
           const rendererPath = path.resolve(renderersPath, name);
-          config.renderers[name] = {
-            active: false,
-            cache: null,
-          };
           config.paths.renderers[name] = {
             root: rendererPath,
             css: path.resolve(rendererPath, INDEX_CSS),

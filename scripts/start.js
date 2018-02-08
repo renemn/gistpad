@@ -26,9 +26,12 @@ log.sign(displayName, version, { font: 'Big' });
     await prepare()
       .catch(lifespan.fail('Error while preparing the "build" folder.'));
 
-    // 3. Produce JS and CSS bundles for renderers and main contexts
+    // 3. Produce initial JS and CSS bundles for main and renderers
     await produce()
-      .catch(lifespan.fail('Error while production bundles.'));
+      .catch(lifespan.fail('Error while producing initial bundles.'));
+    
+    // await serve()
+    //   .catch(lifespan.fail('Error during server initialization.'));
     
     // ['SIGINT', 'SIGTERM'].forEach((sig) => {
     //   process.on(sig, () => {
