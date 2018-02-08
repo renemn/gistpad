@@ -1,5 +1,4 @@
 const fs = require('fs-extra');
-const config = require('../config');
 
 const nodeModules = [
   'assert', 'buffer', 'child_process', 'cluster', 'console', 'constants',
@@ -11,8 +10,8 @@ const nodeModules = [
 
 const electronModules = ['electron'];
 
-module.exports = () => {
-  const pkg = JSON.parse(fs.readFileSync(config.paths.package, 'utf-8'));
+module.exports = (packagePath) => {
+  const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf-8'));
   return [].concat.apply([], [
     nodeModules,
     electronModules,
