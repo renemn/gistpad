@@ -1,7 +1,7 @@
-const Component = require('../../_shared/utils/Component');
-const GistDocument = require('./GistDocument');
+import Component from '../../_shared/utils/Component';
+import GistDocument from './GistDocument';
 
-module.exports = class GistCollection extends Component {
+export default class GistCollection extends Component {
   static template() {
     return (
       `<div class="gist-collection"></diV>`

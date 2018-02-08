@@ -1,4 +1,4 @@
-const Component = require('../../_shared/utils/Component');
+import Component from '../../_shared/utils/Component';
 
 const getLanguageFromExtension = (extension) => {
   let filetype = null;
@@ -24,7 +24,7 @@ const getLanguageFromExtension = (extension) => {
   return filetype;
 };
 
-module.exports = class GistDocument extends Component {
+export default class GistDocument extends Component {
   static template({ name }) {
     return (
       `<div class="gist-document">
@@ -45,7 +45,7 @@ module.exports = class GistDocument extends Component {
 
   _createModel() {
     const { extension, value, name } = this.props;
-    let uri = window.monaco.Uri.parse(`file:///${name}`);
+    const uri = window.monaco.Uri.parse(`file:///${name}`);
     let model = window.monaco.editor.getModel(uri);
     if (!model) {
       model = window.monaco.editor.createModel(value, getLanguageFromExtension(extension), uri);
@@ -58,7 +58,7 @@ module.exports = class GistDocument extends Component {
   }
 
   _addMonacoEditor() {
-    let model = this._createModel();
+    const model = this._createModel();
     this.editor = window.monaco.editor.create(this.$body, {
       theme: 'github',
       minimap: { enabled: false },
@@ -70,7 +70,7 @@ module.exports = class GistDocument extends Component {
       scrollbar: { vertical: 'hidden', verticalHasArrows: false },
       model,
     });
-    this.editor.onDidChangeModelContent(e => {
+    this.editor.onDidChangeModelContent(() => {
       this.refreshEditorLayout();
     });
   }

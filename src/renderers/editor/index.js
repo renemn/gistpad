@@ -1,4 +1,4 @@
-const GistCollection = require('./components/GistCollection');
+import GistCollection from './components/GistCollection';
 
 const gistDirTree = {
   path: 'k2je08kf53kf',

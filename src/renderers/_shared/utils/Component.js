@@ -1,4 +1,4 @@
-module.exports = class Component {
+export default class Component {
   static template() {
     return `<div></div>`;
   }
@@ -37,7 +37,7 @@ module.exports = class Component {
 
   removeChild(key) {
     if (!this.children.has(key)) {
-      console.warn(`Child with key '${key}' does not exist.`);
+      console.warn(`Child with key '${key}' does not exist.`); // eslint-disable-line
       return;
     }
     this.children.get(key).parent = null;
