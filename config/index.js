@@ -38,7 +38,7 @@ config.setup = (options = {}) => (
 
       config.paths = {};
       config.renderers = {};
-      config.eslintErrors = {};
+      config.eslintErrors = new Set();
 
       Object.keys(pathsJSON).forEach(name => {
         config.paths[name] = path.resolve(config.cwd, pathsJSON[name]);
