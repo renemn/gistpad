@@ -39,6 +39,7 @@ config.setup = (options = {}) => (
       config.paths = {};
       config.bundles = {};
       config.eslintErrors = {};
+      config.renderers = [];
 
       Object.keys(pathsJSON).forEach(name => {
         config.paths[name] = path.resolve(config.cwd, pathsJSON[name]);
@@ -62,6 +63,7 @@ config.setup = (options = {}) => (
         ))
         .forEach(name => {
           const rendererPath = path.resolve(renderersPath, name);
+          config.renderers.push(name);
           config.paths.renderers[name] = {
             root: rendererPath,
             css: path.resolve(rendererPath, INDEX_CSS),
