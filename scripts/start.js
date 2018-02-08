@@ -28,7 +28,7 @@ log.sign(displayName, version, { font: 'Big' });
       .catch(lifespan.fail('Error while preparing the "build" folder.'));
 
     // 3. Produce initial JS and CSS bundles for main and renderers
-    await produce()
+    await produce.all()
       .catch(lifespan.fail('Error while producing initial bundles.'));
     
     // 4. Serve bundles and assets from build folder
