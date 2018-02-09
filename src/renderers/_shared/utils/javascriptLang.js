@@ -41,13 +41,13 @@ export default {
     root: [
       [/(const\s)([a-zA-Z_\$][\w\$]*)(?=\s=\s)/, {
         cases: {
-          '$1': ['keyword', 'predefined.identifier'],
+          $1: ['keyword', 'predefined.identifier'],
         }
       }],
 
       [/(\.)([a-zA-Z_\$][\w\$]*)(?=\s=\s)/, {
         cases: {
-          '$1': ['delimiter', 'properties.identifier'],
+          $1: ['delimiter', 'properties.identifier'],
           '@default': 'predefined.identifier',
         }
       }],
@@ -64,7 +64,7 @@ export default {
       [/([a-zA-Z_\$][\w\$]*)(\s*)(:?)/, {
         cases: {
           '$1@keywords': ['keyword','white','delimiter'],
-          '$3': ['key.identifier', 'white','operator'],   // followed by :
+          $3: ['key.identifier', 'white','operator'],   // followed by :
           '$1@builtins': ['predefined.identifier','white','delimiter'],
           '@default': ['identifier','white','delimiter'],
         }
@@ -80,8 +80,12 @@ export default {
       // delimiters and operators
       [/[{}()\[\]]/, '@brackets'],
       [/[;,.]/, 'delimiter'],
-      [/@symbols/, { cases: {'@operators': 'operator',
-                             '@default': '' }}],
+      [/@symbols/, {
+        cases: {
+          '@operators': 'operator',
+          '@default': ''
+        }
+      }],
 
       // numbers
       [/\d+\.\d*(@exponent)?/, 'number.float'],
@@ -118,8 +122,12 @@ export default {
       [/[^\\`"']+/, 'string'],
       [/@escapes/, 'string.escape'],
       [/\\./,      'string.escape.invalid'],
-      [/[`"']/,     { cases: { '$#==$S2' : { token: 'string', next: '@pop' },
-                              '@default': 'string' }} ]
+      [/[`"']/, {
+        cases: {
+          '$#==$S2': { token: 'string', next: '@pop' },
+          '@default': 'string'
+        }
+      }]
     ],
 
     // We match regular expression quite precisely

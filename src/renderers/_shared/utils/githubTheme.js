@@ -1,6 +1,6 @@
 export default {
-	base: 'vs', // can also be vs-dark or hc-black
-	inherit: true, // can also be false to completely replace the builtin rules
+  base: 'vs', // can also be vs-dark or hc-black
+  inherit: true, // can also be false to completely replace the builtin rules
   colors: {
     'editor.background': '#ffffff',
     'editor.foreground': '#24292e',
@@ -9,7 +9,7 @@ export default {
     'editorBracketMatch.background': '#f1f8ff',
     'editorBracketMatch.border': '#c8e1ff'
   },
-	rules: [
+  rules: [
     {
       token: 'emphasis',
       fontStyle: 'italic',
