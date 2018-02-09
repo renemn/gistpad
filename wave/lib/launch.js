@@ -5,8 +5,6 @@ const log = require('../utils/log');
 
 module.exports = () => (
   new Promise((resolve, reject) => {
-    log(`${config.package.displayName} desktop application running...`);
-
     const { paths } = config;
     const src = paths.main.root.replace(paths.src, paths.build);
     const proc = spawn(electron, [src]);
@@ -30,9 +28,10 @@ module.exports = () => (
     });
 
     proc.on('exit', () => {
-      resolve();
+      config.events.emit('stop');
     });
 
     config.electron = proc;
+    resolve();
   })
 );

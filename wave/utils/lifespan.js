@@ -16,7 +16,11 @@ lifespan.start = () => {
 
 lifespan.finish = () => {
   log(`Process finished in ${timing(process.hrtime(hr))}`);
-  log(chalk.green('SUCCESS!'));
+  if (process.env.NODE_ENV === 'production') {
+    log(chalk.green('SUCCESS!'));
+  } else {
+    log(chalk.bold('Application stopped.'));
+  }
   process.exit(0);
 };
 

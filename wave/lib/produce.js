@@ -77,7 +77,7 @@ produce.buildMarkupForRenderer = (name) => (
     const target = replaceSrc(src);
     fs.copy(src, target)
       .then(() => resolve({
-        context: 'renderer', name, type: 'html', src, target, code: null, cache: null
+        context: 'renderer', name, type: 'html', src, target, dependencies: null, code: null, cache: null
       }));
   })
 );

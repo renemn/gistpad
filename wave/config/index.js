@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
+const EventEmitter = require('events');
 
 const pathsJSON = require('./paths.json');
 const config = module.exports;
@@ -30,6 +31,7 @@ config.setup = (options = {}) => (
         config.cwd = path.normalize(path.join(process.cwd(), config.cwd));
       }
 
+      config.events = new EventEmitter();
       config.paths = {};
       config.bundles = {};
       config.eslintErrors = {};

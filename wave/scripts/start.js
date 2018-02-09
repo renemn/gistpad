@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'development';
 
 const options = require('minimist')(process.argv.slice(2));
+const chalk = require('chalk');
 const config = require('../config');
 const log = require('../utils/log');
 const lifespan = require('../utils/lifespan');
@@ -15,10 +16,17 @@ const clearScreen = (displayName, version) => {
   log.sign(displayName, version, { font: 'Big' });
 };
 
+const stopEvents = () => {
+  if (config.watcher) {
+    config.watcher.unwatch();
+    config.watcher.close();
+  }
+  config.events.removeAllListeners();
+};
+
 const stopScript = () => {
   log.debug('Config: ↴\n', config);
-  config.watcher.unwatch();
-  config.watcher.close();
+  stopEvents();
   lifespan.finish();
 };
 
@@ -31,8 +39,11 @@ const stopScript = () => {
     ['SIGINT', 'SIGTERM'].forEach((sig) => { process.on(sig, stopScript); });
 
     // Setup configuration asynchronously and fail if errors are found
-    const { package: { displayName, version } } = await config.setup(opts)
+    const { package: { displayName, version }, events } = await config.setup(opts)
       .catch(lifespan.fail('Error while setting up configuration.'));
+    
+    events.on('clear', () => { clearScreen(displayName, version); });
+    events.on('stop', () => { stopScript(); });
 
     clearScreen(displayName, version);
 
@@ -40,19 +51,23 @@ const stopScript = () => {
     await produce.all()
       .catch(lifespan.fail('Error while producing initial bundles.'));
 
-    // clearScreen(displayName, version);
+    clearScreen(displayName, version);
 
     // Watch for files that change and hot reload according
-    await watch()
+    const srcPath = await watch()
       .catch(lifespan.fail('Something went wrong while watching src files.'));
-    
+  
     // Launch the electron app using bundles from build
     await launch()
       .catch(lifespan.fail('Error while opening the electron app.'));
     
-    stopScript();
+    log(`${displayName} desktop application running...`);
+    log(`Watching ${chalk.green(chalk.bold(srcPath))} for changes...`);
+    
+    // stopScript();
 
   } catch (err) {
+    stopEvents();
     if (err && err.message) return Promise.reject(err.message);
     process.exit(1);
   }
