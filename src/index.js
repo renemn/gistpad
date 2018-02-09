@@ -8,7 +8,7 @@ const createWindow = () => {
   win = new BrowserWindow({ width: 900, height: 700 });
 
   win.loadURL(url.format({
-    pathname: path.join(__dirname, '../renderers/editor/index.html'),
+    pathname: path.join(__dirname, './editor/index.html'),
     protocol: 'file:',
     slashes: true,
   }));

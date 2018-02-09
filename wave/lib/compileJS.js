@@ -1,3 +1,4 @@
+const path = require('path');
 const { rollup } = require('rollup');
 const buble = require('rollup-plugin-buble');
 const commonjs = require('rollup-plugin-commonjs');
@@ -29,7 +30,7 @@ module.exports = (src) => (
       plugins: filterFalsies([
         json(),
         eslint({
-          configFile: paths.eslintrc,
+          configFile: path.join(__dirname, '../config/.eslintrc'),
           exclude: [`${paths.nodeModules}/**`],
           include: [`${paths.src}/**`],
           useEslintrc: false,
@@ -54,7 +55,7 @@ module.exports = (src) => (
         }),
         isProduction ? uglify() : null,
       ]),
-      external: getExternals(config.paths.package),
+      external: getExternals(paths.package),
       onwarn() {},
     };
 

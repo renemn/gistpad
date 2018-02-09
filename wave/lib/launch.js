@@ -2,11 +2,10 @@ const { spawn } = require('child_process');
 const electron = require('electron');
 const config = require('../config');
 const log = require('../utils/log');
-const { displayName } = require('../package.json');
 
 module.exports = () => (
   new Promise((resolve, reject) => {
-    log(`Launching ${displayName} desktop application...`);
+    log(`Launching ${config.package.displayName} desktop application...`);
 
     const { paths } = config;
     const src = paths.main.root.replace(paths.src, paths.build);

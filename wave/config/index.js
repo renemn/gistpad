@@ -4,9 +4,6 @@ const path = require('path');
 const pathsJSON = require('./paths.json');
 const config = module.exports;
 
-const MAIN = 'main';
-const RENDERERS = 'renderers';
-
 const INDEX_CSS = 'index.css';
 const INDEX_HTML = 'index.html';
 const INDEX_JS = 'index.js';
@@ -45,13 +42,15 @@ config.setup = (options = {}) => (
       Object.keys(pathsJSON).forEach(name => {
         config.paths[name] = path.resolve(config.cwd, pathsJSON[name]);
       });
+
+      config.package = JSON.parse(fs.readFileSync(config.paths.package, 'utf-8'));
       
       config.paths.main = {};
-      config.paths.main.root = path.resolve(config.paths.src, MAIN);
+      config.paths.main.root = config.paths.src;
       config.paths.main.js = path.resolve(config.paths.main.root, INDEX_JS);
 
       config.paths.renderers = {};
-      config.paths.renderers.root = path.resolve(config.paths.src, RENDERERS);
+      config.paths.renderers.root = config.paths.src;
 
       renderersPath = config.paths.renderers.root;
 
@@ -73,9 +72,9 @@ config.setup = (options = {}) => (
           };
         });
 
-      return resolve(config);
+      resolve(config);
     } catch (err) {
-      return reject(err);
+      reject(err);
     }
   })
 );

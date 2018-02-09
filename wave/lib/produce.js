@@ -1,5 +1,4 @@
 const fs = require('fs-extra');
-const path = require('path');
 const config = require('../config');
 const log = require('../utils/log');
 const compileJS = require('./compileJS');
@@ -12,7 +11,7 @@ const replaceSrc = (src) => (
 );
 
 produce.buildScriptForMain = (name = 'main') => (
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     const src = config.paths.main.js;
     const target = replaceSrc(src);
     let bundle = null;
@@ -27,7 +26,7 @@ produce.buildScriptForMain = (name = 'main') => (
 );
 
 produce.buildScriptForRenderer = (name) => (
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     const src = config.paths.renderers[name].js;
     const target = replaceSrc(src);
     let bundle = null;
@@ -42,7 +41,7 @@ produce.buildScriptForRenderer = (name) => (
 );
 
 produce.buildStyleForRenderer = (name) => (
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     const src = config.paths.renderers[name].css;
     const target = replaceSrc(src);
     let bundle = null;
@@ -57,7 +56,7 @@ produce.buildStyleForRenderer = (name) => (
 );
 
 produce.buildMarkupForRenderer = (name) => (
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     const src = config.paths.renderers[name].html;
     const target = replaceSrc(src);
     fs.copy(src, target)
@@ -81,22 +80,24 @@ produce.buildMarkupsForRenderers = () => (
 
 produce.all = () => (
   new Promise((resolve, reject) => {
-    log('Producing script and style bundles...');
-    Promise
-      .all([].concat.apply([], [
+    log('Producing bundles for scripts and styles...');
+
+    const { build: buildSrc } = config.paths;
+    Promise.resolve()
+      .then(() => fs.ensureDir(buildSrc))
+      .then(() => fs.emptyDir(buildSrc))
+      .then(() => Promise.all([].concat.apply([], [
         produce.buildMarkupsForRenderers(),
         produce.buildStylesForRenderers(),
         produce.buildScriptsForRenderers(),
         produce.buildScriptForMain()
-      ]))
+      ])))
       .then((allBundles) => {
         const eslintErrorsKeys = Object.keys(config.eslintErrors);
         if (eslintErrorsKeys.length > 0) {
           log.error('ESLint errors found: ↴\n');
-          // const firstKey = eslintErrorsKeys[0];
-          // console.log(config.eslintErrors[firstKey]); // Show only one error per time
           eslintErrorsKeys.forEach((key) => {
-            console.log(config.eslintErrors[key]);
+            console.log(config.eslintErrors[key]); // eslint-disable-line
           });
           if (process.env.NODE_ENV === 'production') {
             return reject();
@@ -105,7 +106,7 @@ produce.all = () => (
         allBundles.forEach(({ src, ...rest }) => {
           config.bundles[src] = rest;
         });
-        return resolve();
+        resolve();
       })
       .catch((err) => reject(err));
   })

@@ -1,8 +1,5 @@
 {
-  "assets": "src/assets",
-  "banner": "config/banner.js",
   "build": "build",
-  "eslintrc": "config/.eslintrc",
   "nodeModules": "node_modules",
   "package": "package.json",
   "src": "src"

@@ -4,9 +4,17 @@
   "version": "0.0.1",
   "main": "build/index.js",
   "private": true,
+  "license": "MIT",
   "scripts": {
-    "start": "node scripts/start.js"
+    "start": "node wave/scripts/start.js"
   },
+  "eslintConfig": {
+    "extends": "./wave/config/.eslintrc"
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "build"
+  ],
   "devDependencies": {},
   "dependencies": {
     "babel-code-frame": "^6.26.0",
