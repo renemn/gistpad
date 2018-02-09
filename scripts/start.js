@@ -7,6 +7,7 @@ const lifespan = require('../utils/lifespan');
 const prepare = require('../lib/prepare');
 const produce = require('../lib/produce');
 const serve = require('../lib/serve');
+const launch = require('../lib/launch');
 const { displayName, version } = require('../package.json');
 
 lifespan.start();
@@ -35,14 +36,18 @@ log.sign(displayName, version, { font: 'Big' });
     await serve()
       .catch(lifespan.fail('Error during server initialization.'));
     
-    // 5. Stop all processes running when signals below get listened
+    // 5. Launch the electron app using bundles from build
+    await launch()
+      .catch(lifespan.fail('Error while opening the electron app.'));
+    
+    // 6. Stop all processes running when signals below get listened
     ['SIGINT', 'SIGTERM'].forEach((sig) => {
       process.on(sig, () => {
         lifespan.finish();
       });
     });
 
-    // 6. Log the whole configuration, only on debug mode on
+    // 7. Log the whole configuration, only on debug mode on
     log.debug('Config: ↴\n', config);
   } catch (err) {
     if (err && err.message) {
