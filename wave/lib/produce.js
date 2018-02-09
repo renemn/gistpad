@@ -1,4 +1,6 @@
 const fs = require('fs-extra');
+const path = require('path');
+const chalk = require('chalk');
 const config = require('../config');
 const log = require('../utils/log');
 const compileJS = require('./compileJS');
@@ -10,6 +12,13 @@ const replaceSrc = (src) => (
   src.replace(config.paths.src, config.paths.build)
 );
 
+const resolvePaths = (directory, dependencies) => {
+  const result = dependencies.map((dependency) => (
+    path.resolve(directory, dependency)
+  ));
+  return result;
+};
+
 produce.buildScriptForMain = (name = 'main') => (
   new Promise((resolve) => {
     const src = config.paths.main.js;
@@ -17,8 +26,9 @@ produce.buildScriptForMain = (name = 'main') => (
     let bundle = null;
     fs.ensureFile(target)
       .then(() => compileJS(src))
-      .then(({ code, cache }) => {
-        bundle = { context: name, name, type: 'js', src, target, code, cache };
+      .then(({ code, cache, map }) => {
+        const dependencies = resolvePaths(path.dirname(src), map.sources);
+        bundle = { context: name, name, type: 'js', src, target, dependencies, code, cache };
         return fs.writeFile(target, code);
       })
       .then(() => resolve(bundle));
@@ -32,8 +42,10 @@ produce.buildScriptForRenderer = (name) => (
     let bundle = null;
     fs.ensureFile(target)
       .then(() => compileJS(src))
-      .then(({ code, cache }) => {
-        bundle = { context: 'renderer', name, type: 'js', src, target, code, cache };
+      .then(({ code, cache, map }) => {
+        const context = 'renderer';
+        const dependencies = resolvePaths(path.dirname(src), map.sources);
+        bundle = { context, name, type: 'js', src, target, dependencies, code, cache };
         return fs.writeFile(target, code);
       })
       .then(() => resolve(bundle));
@@ -47,8 +59,12 @@ produce.buildStyleForRenderer = (name) => (
     let bundle = null;
     fs.ensureFile(target)
       .then(() => compileCSS(src))
-      .then(({ css: code }) => {
-        bundle = { context: 'renderer', name, type: 'css', src, target, code, cache: null };
+      .then(({ css: code, messages }) => {
+        const context = 'renderer';
+        const dependencies = [];
+        messages.forEach(({ type, file }) => { if (type === 'dependency') dependencies.push(file); });
+        dependencies.push(src);
+        bundle = { context, name, type: 'css', src, target, dependencies, code, cache: null };
         return fs.writeFile(target, code);
       })
       .then(() => resolve(bundle));

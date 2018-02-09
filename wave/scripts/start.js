@@ -40,7 +40,7 @@ const stopScript = () => {
     await produce.all()
       .catch(lifespan.fail('Error while producing initial bundles.'));
 
-    clearScreen(displayName, version);
+    // clearScreen(displayName, version);
 
     // Watch for files that change and hot reload according
     await watch()
