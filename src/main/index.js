@@ -7,11 +7,11 @@ let win = null;
 const createWindow = () => {
   win = new BrowserWindow({ width: 900, height: 700 });
 
-  win.loadURL(process.env.NODE_ENV === 'production' ? url.format({
+  win.loadURL(url.format({
     pathname: path.join(__dirname, '../renderers/editor/index.html'),
     protocol: 'file:',
     slashes: true,
-  }) : `http://localhost:3000/editor/index.html}`);
+  }));
 
   win.webContents.openDevTools();
 
