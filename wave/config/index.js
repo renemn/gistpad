@@ -12,9 +12,6 @@ Object.assign(config, {
   cwd: null,
   debug: false,
   port: 3000,
-  watcher: {
-    glob: '**/*.(js|json|html|css)'
-  },
 });
 
 config.setup = (options = {}) => (
@@ -37,7 +34,7 @@ config.setup = (options = {}) => (
       config.bundles = {};
       config.eslintErrors = {};
       config.renderers = [];
-      config.server = null;
+      config.watcher = null;
 
       Object.keys(pathsJSON).forEach(name => {
         config.paths[name] = path.resolve(config.cwd, pathsJSON[name]);

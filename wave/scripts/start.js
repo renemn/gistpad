@@ -6,11 +6,14 @@ const log = require('../utils/log');
 const lifespan = require('../utils/lifespan');
 const produce = require('../lib/produce');
 const launch = require('../lib/launch');
+const watch = require('../lib/watch');
 
 log.debugging = Boolean(options.debug);
 
 const stopScript = () => {
   log.debug('Config: ↴\n', config);
+  config.watcher.unwatch();
+  config.watcher.close();
   lifespan.finish();
 };
 
@@ -18,7 +21,7 @@ const stopScript = () => {
 (async (opts) => {
   try {
     lifespan.start();
-    
+
     process.on('unhandledRejection', lifespan.fail('Unhandled error thrown.'));
     ['SIGINT', 'SIGTERM'].forEach((sig) => { process.on(sig, stopScript); });
 
@@ -32,12 +35,17 @@ const stopScript = () => {
     // Produce initial JS and CSS bundles for main and renderers
     await produce.all()
       .catch(lifespan.fail('Error while producing initial bundles.'));
+
+    // Watch for files that change and hot reload according
+    await watch()
+      .catch(lifespan.fail('Something went wrong while watching src files.'));
     
     // Launch the electron app using bundles from build
     await launch()
       .catch(lifespan.fail('Error while opening the electron app.'));
-
+    
     stopScript();
+
   } catch (err) {
     if (err && err.message) return Promise.reject(err.message);
     process.exit(1);
