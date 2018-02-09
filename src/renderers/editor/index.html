@@ -18,8 +18,6 @@
     </script>
     <script>
       var path = require('path');
-      const customJS = require('../_shared/utils/javascriptLang');
-      const githubTheme = require('../_shared/utils/githubTheme');
 
       function uriFromPath(_path) {
         var pathName = path.resolve(_path).replace(/\\/g, '/');
@@ -37,9 +35,6 @@
       self.process.browser = true;
 
       amdRequire(['vs/editor/editor.main'], function() {
-        window.monaco.languages.register({  id: 'customJS' });
-        window.monaco.languages.setMonarchTokensProvider('customJS', customJS);
-        window.monaco.editor.defineTheme('github', githubTheme);
         require('./index.js');
       });
     </script>

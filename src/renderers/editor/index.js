@@ -1,4 +1,10 @@
+import customJS from '../_shared/utils/javascriptLang';
+import githubTheme from '../_shared/utils/githubTheme';
 import GistCollection from './components/GistCollection';
+
+window.monaco.languages.register({  id: 'customJS' });
+window.monaco.languages.setMonarchTokensProvider('customJS', customJS);
+window.monaco.editor.defineTheme('github', githubTheme);
 
 const gistDirTree = {
   path: 'k2je08kf53kf',
