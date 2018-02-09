@@ -10,6 +10,11 @@ const watch = require('../lib/watch');
 
 log.debugging = Boolean(options.debug);
 
+const clearScreen = (displayName, version) => {
+  log.clear();
+  log.sign(displayName, version, { font: 'Big' });
+};
+
 const stopScript = () => {
   log.debug('Config: ↴\n', config);
   config.watcher.unwatch();
@@ -29,12 +34,13 @@ const stopScript = () => {
     const { package: { displayName, version } } = await config.setup(opts)
       .catch(lifespan.fail('Error while setting up configuration.'));
 
-    log.clear();
-    log.sign(displayName, version, { font: 'Big' });
+    clearScreen(displayName, version);
 
     // Produce initial JS and CSS bundles for main and renderers
     await produce.all()
       .catch(lifespan.fail('Error while producing initial bundles.'));
+
+    clearScreen(displayName, version);
 
     // Watch for files that change and hot reload according
     await watch()

@@ -21,7 +21,7 @@ const addTime = (args) => {
 
 const log = (...args) => {
   addTime(args);
-  console.log.apply(console, args);
+  console.log.apply(console, args); // eslint-disable-line
 };
 
 log.error = (...args) => {
@@ -30,7 +30,7 @@ log.error = (...args) => {
   }
   Array.prototype.unshift.call(args, chalk.red(`[Error]`));
   addTime(args);
-  console.log.apply(console, args);
+  console.log.apply(console, args); // eslint-disable-line
 };
 
 log.debug = (...args) => {
@@ -43,7 +43,7 @@ log.debug = (...args) => {
 log.success = (...args) => {
   Array.prototype.unshift.call(args, chalk.green('[Success]'));
   log.apply(null, args);
-  console.log();
+  console.log(); // eslint-disable-line
 };
 
 log.clear = () => {
@@ -54,7 +54,8 @@ log.clear = () => {
 
 log.sign = (txt = '', version = '', options = {}) => {
   const signature = figlet.textSync(txt, options);
-  console.log(`${signature.replace(/((\s*\S+)*)\s*/, "$1")} v${version}\n`);
+  const v = chalk.cyan(`v${version}`);
+  console.log(`${signature.replace(/((\s*\S+)*)\s*/, "$1")} ${v}\n`); // eslint-disable-line
 };
 
 log.console = console;

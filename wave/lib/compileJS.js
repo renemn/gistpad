@@ -17,7 +17,7 @@ const fromatESLintErros = require('../utils/formatESLintErrors');
 
 module.exports = (src) => (
   new Promise((resolve, reject) => {
-    log.debug(`Compiling "${src}"...`);
+    log(`Compiling "${src}"...`);
 
     const isProduction = process.env.NODE_ENV === 'production';
     const { paths } = config;

@@ -7,7 +7,7 @@ const log = require('../utils/log');
 
 module.exports = (src) => (
   new Promise((resolve, reject) => {
-    log.debug(`Compiling "${src}"...`);
+    log(`Compiling "${src}"...`);
 
     const isProduction = process.env.NODE_ENV === 'production';
     const processor = postcss();

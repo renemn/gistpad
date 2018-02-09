@@ -5,7 +5,7 @@ const log = require('../utils/log');
 
 module.exports = () => (
   new Promise((resolve, reject) => {
-    log(`Launching ${config.package.displayName} desktop application...`);
+    log(`${config.package.displayName} desktop application running...`);
 
     const { paths } = config;
     const src = paths.main.root.replace(paths.src, paths.build);

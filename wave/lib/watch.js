@@ -8,7 +8,7 @@ module.exports = () => (
   new Promise((resolve) => {
     const srcPath = config.paths.src;
 
-    log(`Watching ${chalk.bold(srcPath)} for changes.`);
+    log(`Watching ${chalk.green(chalk.bold(srcPath))} for changes...`);
 
     const srcGlob = path.join(srcPath, '**/*.(js|json|html|css)');    
     const watcher = chokidar.watch(srcGlob, {
