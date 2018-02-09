@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "private": true,
   "scripts": {
-    "start": "node scripts/start.js --debug"
+    "start": "node scripts/start.js"
   },
   "devDependencies": {},
   "dependencies": {
@@ -16,7 +16,6 @@
     "eslint": "^4.17.0",
     "eslint-plugin-import": "^2.8.0",
     "figlet": "^1.2.0",
-    "finalhandler": "^1.1.0",
     "fs-extra": "^5.0.0",
     "minimist": "^1.2.0",
     "monaco-editor": "^0.10.1",
@@ -31,7 +30,6 @@
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "^3.0.2",
     "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-uglify": "^3.0.0",
-    "serve-static": "^1.13.1"
+    "rollup-plugin-uglify": "^3.0.0"
   }
 }
