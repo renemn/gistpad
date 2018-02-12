@@ -30,9 +30,9 @@ lifespan.fail = (msg) => (e) => {
   if (e && e.stack) {
     const str = e.stack.split('\n');
     log(chalk.bold(str.shift()));
-    console.log(str.join('\n'));
+    console.log(str.join('\n')); // eslint-disable-line
   }
   log.error('FAILED!');
-  console.log();
+  console.log(); // eslint-disable-line
   process.exit(1);
 };

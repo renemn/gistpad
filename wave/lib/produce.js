@@ -82,16 +82,16 @@ produce.buildMarkupForRenderer = (name) => (
   })
 );
 
-produce.buildScriptsForRenderers = () => (
-  config.renderers.map(produce.buildScriptForRenderer)
+produce.buildScriptsForRenderers = (names) => (
+  names.map(produce.buildScriptForRenderer)
 );
 
-produce.buildStylesForRenderers = () => (
-  config.renderers.map(produce.buildStyleForRenderer)
+produce.buildStylesForRenderers = (names) => (
+  names.map(produce.buildStyleForRenderer)
 );
 
-produce.buildMarkupsForRenderers = () => (
-  config.renderers.map(produce.buildMarkupForRenderer)
+produce.buildMarkupsForRenderers = (names) => (
+  names.map(produce.buildMarkupForRenderer)
 );
 
 produce.all = () => (
@@ -99,13 +99,14 @@ produce.all = () => (
     log('Producing bundles for scripts and styles...');
 
     const { build: buildSrc } = config.paths;
+    const names = config.renderers;
     Promise.resolve()
       .then(() => fs.ensureDir(buildSrc))
       .then(() => fs.emptyDir(buildSrc))
       .then(() => Promise.all([].concat.apply([], [
-        produce.buildMarkupsForRenderers(),
-        produce.buildStylesForRenderers(),
-        produce.buildScriptsForRenderers(),
+        produce.buildMarkupsForRenderers(names),
+        produce.buildStylesForRenderers(names),
+        produce.buildScriptsForRenderers(names),
         produce.buildScriptForMain()
       ])))
       .then((allBundles) => {
