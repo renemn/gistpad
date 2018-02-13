@@ -16,7 +16,7 @@ module.exports = () => (
     proc.stderr.on('data', (data) => {
       const str = data.toString();
       if (!str.includes(`Couldn't set selectedTextBackgroundColor from default ()`)) {
-        log.error(str);
+        // log.error(str);
       }
     });
 
