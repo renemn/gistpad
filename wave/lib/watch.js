@@ -36,7 +36,7 @@ module.exports = () => (
       const emitAction = (action) => {
         renderersNames
           .filter(name => clients.hasOwnProperty(name))
-          .map(name => clients[name].send(JSON.stringify({ action })));
+          .forEach(name => clients[name].send(JSON.stringify({ action })));
       };
 
       Object.keys(config.bundles)
@@ -44,7 +44,7 @@ module.exports = () => (
           const { dependencies, context } = config.bundles[bundle];
           return dependencies && dependencies.includes(filepath) && context === 'renderer';
         })
-        .map((bundle) => renderersNames.push(config.bundles[bundle].name));
+        .forEach((bundle) => renderersNames.push(config.bundles[bundle].name));
 
       if (renderersNames.length <= 0) return;
 
