@@ -36,7 +36,17 @@ const socketTag = (renderer) => (`\n
       ws.onmessage = ({ data }) => {
         const { action } = JSON.parse(data);
         switch (action) {
-          case 'reload': window.location.reload();
+          case 'reload':
+            window.location.reload();
+            break;
+          case 'repaint':
+            const styles = document.querySelectorAll('link[rel=stylesheet]');
+            styles.forEach((style) => {
+              const href = style.getAttribute('href');
+              const newHref = href + (href.indexOf('?') >= 0 ? '&' : '?') + '_wave_nocache=' + (new Date()).getTime();
+              style.setAttribute('href', newHref);
+            });
+            break;
         }
       };
     })();

@@ -30,33 +30,35 @@ module.exports = () => (
       ignoreInitial: true,
     });
 
-    watcher.on('change', (filepath) => {
+    watcher.on('change', filepath => {
       log.debug(`Source changed: ${filepath}`);
       const renderersNames = [];
-      Object.keys(config.bundles).forEach((bundle) => {
-        const { dependencies, context, name } = config.bundles[bundle];
-        if (dependencies && dependencies.includes(filepath) && context === 'renderer') {
-          renderersNames.push(name);
-        }
-      });
+      const emitAction = (action) => {
+        renderersNames
+          .filter(name => clients.hasOwnProperty(name))
+          .map(name => clients[name].send(JSON.stringify({ action })));
+      };
+
+      Object.keys(config.bundles)
+        .filter(bundle => {
+          const { dependencies, context } = config.bundles[bundle];
+          return dependencies && dependencies.includes(filepath) && context === 'renderer';
+        })
+        .map((bundle) => renderersNames.push(config.bundles[bundle].name));
+
       if (renderersNames.length <= 0) return;
+
       log.debug(`Refreshing renderers: ${chalk.bold(renderersNames.join(', '))}`);
       // config.events.emit('clear');
       switch (path.extname(filepath)) {
         case '.js':
           produce.buildScriptsForRenderers(renderersNames).then(() => {
-            renderersNames.forEach(name => {
-              if (clients[name]) {
-                clients[name].send(JSON.stringify({ action: 'reload' }));
-              } else {
-                log(`Client with name "${name}" does not exist.`);
-              }
-            });
+            emitAction('reload');
           });
           break;
         case '.css':
           produce.buildStylesForRenderers(renderersNames).then(() => {
-            log.debug('>>> Bundles:', config.bundles); // eslint-disable-line
+            emitAction('repaint');
           });
           break;
         case '.html':
