@@ -20,12 +20,18 @@ config.setup = (options = {}) => (
     try {
       let renderersPath = null;
 
-      Object.keys(options).forEach(key => {
+      /*Object.keys(options).forEach(key => {
         if (config.hasOwnProperty(key)) {
           config[key] = typeof options[key] === 'undefined' ?
             config[key] : options[key];
         }
-      });
+      });*/
+      
+      Object.keys(options)
+        .filter(k => config.hasOwnProperty(k))
+        .forEach((k) => {
+          config[k] = typeof options[k] === 'undefined' ? config[key] : options[k];
+        });
 
       if (!path.isAbsolute(config.cwd)) {
         config.cwd = path.normalize(path.join(process.cwd(), config.cwd));
