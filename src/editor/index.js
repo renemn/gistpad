@@ -92,4 +92,6 @@ const gistCollection = new GistCollection({
   dirTree: gistDirTree,
 });
 
+// console.log(gistCollection); // eslint-disable-line
+
 gistCollection.render(document.body, 'afterbegin');

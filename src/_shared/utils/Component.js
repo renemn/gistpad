@@ -1,26 +1,36 @@
+import { ObjectModel } from 'objectmodel';
+
 export default class Component {
   static template() {
     return `<div></div>`;
   }
 
+  static propTypes() {
+    return {};
+  }
+
+  static defaultProps() {
+    return {};
+  }
+
   constructor(props = {}) {
     if (!props.key) {
-      throw new Error(`All components need a 'key' property.`);
+      throw new Error(`All components need a 'key' property as identifier.`);
     }
     let $tmp = document.createElement('div');
     this.children = new Map();
     this.parent = null;
-    this.props = Object.assign({}, props);
+    const Props = ObjectModel(Object.assign({}, this.constructor.propTypes(), { key: String }))
+      .defaults(Object.assign({}, this.constructor.defaultProps(), props));
+    this.props = new Props();
     $tmp.insertAdjacentHTML('afterbegin', this.constructor.template(this.props));
     this.$element = $tmp.firstChild;
     $tmp = null;
     if (this.props.className) {
       this.$element.classList.add(this.props.className);
     }
-    this.componentAfterInit();
   }
 
-  componentAfterInit() {}
   componentAfterRender() {}
 
   setParent(parent) {

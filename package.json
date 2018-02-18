@@ -27,6 +27,7 @@
     "fs-extra": "^5.0.0",
     "minimist": "^1.2.0",
     "monaco-editor": "^0.10.1",
+    "objectmodel": "^3.2.2",
     "postcss": "^6.0.17",
     "postcss-cssnext": "^3.1.0",
     "postcss-csso": "^3.0.0",

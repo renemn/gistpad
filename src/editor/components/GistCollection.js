@@ -1,3 +1,4 @@
+import { ObjectModel, ArrayModel } from 'objectmodel';
 import Component from '../../_shared/utils/Component';
 import GistDocument from './GistDocument';
 
@@ -6,6 +7,18 @@ export default class GistCollection extends Component {
     return (
       `<div class="gist-collection"></diV>`
     );
+  }
+
+  static propTypes() {
+    return {
+      dirTree: ObjectModel({
+        path: String,
+        name: String,
+        size: Number,
+        type: String,
+        children: ArrayModel(Object),
+      }),
+    };
   }
 
   componentAfterRender() {

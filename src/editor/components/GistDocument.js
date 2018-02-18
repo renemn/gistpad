@@ -36,8 +36,20 @@ export default class GistDocument extends Component {
       </diV>`
     );
   }
-  
-  componentAfterInit() {
+
+  static propTypes() {
+    return {
+      path: String,
+      name: String,
+      size: Number,
+      type: 'file',
+      extension: ['.html', '.js', '.css', '.json'],
+      value: String,
+    };
+  }
+
+  constructor(props) {
+    super(props);
     this.$filename = this.$element.getElementsByClassName('gist-document-name`')[0];
     this.$body = this.$element.getElementsByClassName('gist-document-body')[0];
     this._addMonacoEditor();
