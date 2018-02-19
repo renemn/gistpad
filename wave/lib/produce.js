@@ -21,6 +21,7 @@ const resolvePaths = (directory, dependencies) => {
 };
 
 const socketTag = (renderer) => (`\n
+  <pre id="wave-overlay"></pre>
   <script id="wave-socket">
     const WebSocket = require('ws');
     ${pws}
@@ -48,7 +49,15 @@ const socketTag = (renderer) => (`\n
             });
             break;
           case 'overlay':
-            console.log('>>> Message:', msg);
+            console.log('>>> Message:', JSON.stringify(msg));
+            const overlay = document.getElementById('wave-overlay');
+            overlay.innerHTML = msg;
+            // margin: 0 auto;
+            // width: 650px;
+            // border: 1px solid #ddd;
+            // padding: 25px;
+            // border-radius: 10px;
+            // background-color: #fbfbff;
             break;
         }
       };

@@ -7,6 +7,7 @@ const json = require('rollup-plugin-json');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const replace = require('rollup-plugin-replace');
 const uglify = require('rollup-plugin-uglify');
+const AnsiUp = require('ansi_up');
 
 const config = require('../config');
 const log = require('../utils/log');
@@ -23,6 +24,7 @@ module.exports = (src) => (
     const { paths } = config;
     const cache = config.bundles[src] ? config.bundles[src].cache : null;
     let bundleCache = null;
+    const ansiUp = new AnsiUp.default;
 
     const rollupConfig = {
       input: src,
@@ -39,6 +41,7 @@ module.exports = (src) => (
             if (output) {
               config.eslintErrors[src] = output;
               log.error(output);
+              config.events.emit('error', ansiUp.ansi_to_html(output));
             }
           }
         }),
@@ -76,7 +79,7 @@ module.exports = (src) => (
           if (process.env.NODE_ENV !== 'development') {
             return reject(); 
           }
-          config.events.emit('error', err);
+          config.events.emit('error', errorMsg);
         } else {
           return reject(err);
         }
