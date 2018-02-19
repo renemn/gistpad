@@ -25,7 +25,7 @@ module.exports = (src) => (
     let bundleCache = null;
 
     const rollupConfig = {
-      entry: src,
+      input: src,
       cache,
       plugins: filterFalsies([
         json(),
@@ -38,6 +38,7 @@ module.exports = (src) => (
             const output = fromatESLintErros(results);
             if (output) {
               config.eslintErrors[src] = output;
+              log.error(output);
             }
           }
         }),
@@ -70,11 +71,12 @@ module.exports = (src) => (
       })
       .catch((err) => {
         if (err.plugin) {
-          log.error(
-            `${capitalizeFirstLetter(err.plugin)} problem found. ↴\n`,
-            err.plugin && err.plugin === 'buble' ? formatBubleErrors(err) : err
-          );
-          return reject();
+          const errorMsg = err.plugin && err.plugin === 'buble' ? formatBubleErrors(err) : err;
+          log.error(`${capitalizeFirstLetter(err.plugin)} problem found. ↴\n`, errorMsg);
+          if (process.env.NODE_ENV !== 'development') {
+            return reject(); 
+          }
+          config.events.emit('error', err);
         } else {
           return reject(err);
         }

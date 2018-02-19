@@ -14,6 +14,23 @@ module.exports = () => (
 
     const wss = new WebSocket.Server({ port: config.port });
     const clients = {};
+    let renderersNames = [];
+
+    const emitAction = (action, data = null) => {
+      renderersNames
+        .filter(name => clients.hasOwnProperty(name))
+        .forEach(name => clients[name].send(JSON.stringify({ action, data })));
+      renderersNames = [];
+      renderersNames.length = 0;
+    };
+
+    const watcher = chokidar.watch(srcGlob, {
+      ignoreInitial: true,
+    });
+
+    config.events.on('error', (msg) => {
+      emitAction('overlay', msg);
+    });
 
     wss.on('connection', (wsc, req) => {
       const { query: { id } } = url.parse(req.url, true);
@@ -26,18 +43,8 @@ module.exports = () => (
       });
     });
 
-    const watcher = chokidar.watch(srcGlob, {
-      ignoreInitial: true,
-    });
-
     watcher.on('change', filepath => {
       log.debug(`Source changed: ${filepath}`);
-      const renderersNames = [];
-      const emitAction = (action) => {
-        renderersNames
-          .filter(name => clients.hasOwnProperty(name))
-          .forEach(name => clients[name].send(JSON.stringify({ action })));
-      };
 
       Object.keys(config.bundles)
         .filter(bundle => {
@@ -49,7 +56,7 @@ module.exports = () => (
       if (renderersNames.length <= 0) return;
 
       log.debug(`Refreshing renderers: ${chalk.bold(renderersNames.join(', '))}`);
-      // config.events.emit('clear');
+      config.events.emit('clear');
       switch (path.extname(filepath)) {
         case '.js':
           produce.buildScriptsForRenderers(renderersNames).then(() => {

@@ -34,7 +34,7 @@ const socketTag = (renderer) => (`\n
         ws.send('Connection established with ${renderer} renderer');
       };
       ws.onmessage = ({ data }) => {
-        const { action } = JSON.parse(data);
+        const { action, data: msg } = JSON.parse(data);
         switch (action) {
           case 'reload':
             window.location.reload();
@@ -46,6 +46,9 @@ const socketTag = (renderer) => (`\n
               const newHref = href + (href.indexOf('?') >= 0 ? '&' : '?') + '_wave_nocache=' + (new Date()).getTime();
               style.setAttribute('href', newHref);
             });
+            break;
+          case 'overlay':
+            console.log('>>> Message:', msg);
             break;
         }
       };
